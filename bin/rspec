@@ -14,3 +14,7 @@ require 'rubygems'
 require 'bundler/setup'
 
 load Gem.bin_path('rspec-core', 'rspec')
+
+RSpec.configure do |c|
+  c.expose_current_running_example_as :example
+end
