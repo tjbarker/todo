@@ -24,7 +24,7 @@ describe 'Editing todo lists' do
   it 'updates a todo list successfully with correct information' do
     update_todo_list todo_list: todo_list
 
-    expect(page).to have_content('Todo list was successfully updated')
+    expect(page).to have_content('Todo list updated')
     expect(todo_list.title).to eq('Title_Edited')
     expect(todo_list.description).to eq('Description_Edited')
   end
