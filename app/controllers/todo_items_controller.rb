@@ -1,16 +1,16 @@
 # controller of Todo Items
 class TodoItemsController < ApplicationController
+  before_action :find_todo_list
+
+
   def index
-    @todo_list = TodoList.find(params[:todo_list_id])
   end
 
   def new
-    @todo_list = TodoList.find(params[:todo_list_id])
     @todo_item = @todo_list.todo_items.new
   end
 
   def create
-    @todo_list = TodoList.find(params[:todo_list_id])
     @todo_item = @todo_list.todo_items.new(todo_item_params)
     if @todo_item.save
       flash_success
@@ -20,7 +20,6 @@ class TodoItemsController < ApplicationController
   end
 
   def update
-    @todo_list = TodoList.find(params[:todo_list_id])
     @todo_item = @todo_list.todo_items.find(params[:id])
     if @todo_item.update_attributes(todo_item_params)
       flash[:success] = 'Saved todo list items.'
@@ -31,8 +30,17 @@ class TodoItemsController < ApplicationController
     end
   end
 
+  def destroy
+    @todo_item = @todo_list.todo_items.find(params[:id])
+    if @todo_item.destroy
+      flash[:success] = 'Todo list items was deleted.'
+    else
+      flash[:error] = 'Todo list items was not deleted.'
+    end
+    redirect_to todo_list_todo_items_path
+  end
+
   def edit
-    @todo_list = TodoList.find(params[:todo_list_id])
     @todo_item = @todo_list.todo_items.find(params[:id])
   end
 
@@ -40,8 +48,11 @@ class TodoItemsController < ApplicationController
     { todo_list_id: params[:todo_list_id] }.merge(super)
   end
 
-
   private
+
+  def find_todo_list
+    @todo_list = TodoList.find(params[:todo_list_id])
+  end
 
   def flash_success
     flash[:success] = 'Added todo list item.'
